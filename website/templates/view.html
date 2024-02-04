@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/view.css') }}">
+    <title>LOL</title>
+</head>
+<body>
+
+    {% for wish in wishes %}
+    
+    <div id="{{ wish.id }}" class="wish">
+        <div class="content hide">{{ wish.content }}</div>
+        <div class="author hide">{{ wish.author }}</div>
+    </div>
+    
+    {% endfor %}
+
+    <div>
+        <button type="button" id="create-btn">Tạo lời nhắn</button>
+    </div>
+
+    <div class="layer view hide">
+        <div class="area">
+            <div class="content"></div>
+            <div class="author"></div>
+        </div>
+    </div>
+
+    <div class="layer create hide">
+        <div class="area">
+            <div>Tạo lời nhắn</div>
+            <div>
+                <form method="post">
+                    <label for="content">Message Content</label>
+                    <br>
+                    <textarea name="content"
+                            placeholder="Message content"
+                            rows="15"
+                            cols="60"
+                            >{{ request.form['content'] }}</textarea>
+                    <br>
+                    
+                    <label for="author">author</label>
+                    <br>
+                    <input type="text" name="author"
+                    placeholder="Message author"
+                    value="{{ request.form['author'] }}"></input>
+                    <br>
+    
+                    <button type="submit">Tạo</button>
+                </form>
+    
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        view = document.getElementsByClassName('view')[0]
+
+        wishes_d = document.getElementsByClassName('wish')
+        for(let i = 0; i < wishes_d.length; ++i) {
+            wishes_d[i].addEventListener("click", () => {
+                view.classList.remove("hide");
+                view.children[0].children[0].innerHTML = wishes_d[i].children[0].innerHTML
+                view.children[0].children[1].innerHTML = wishes_d[i].children[1].innerHTML
+            });
+        }
+
+        document.getElementsByClassName('layer')[0].addEventListener('click', (e) => {
+            if(e.target.classList[0] == 'layer') {
+                view.classList.add("hide");
+            }
+        })
+        
+        
+
+        create = document.getElementsByClassName('create')[0]
+        
+        document.getElementById('create-btn').addEventListener('click', () => {
+            create.classList.remove("hide");
+        })
+        
+        document.getElementsByClassName('layer')[1].addEventListener('click', (e) => {
+            if(e.target.classList[0] == 'layer') {
+                create.classList.add("hide");
+            }
+        })
+
+    </script>
+
+</body>
+</html>
